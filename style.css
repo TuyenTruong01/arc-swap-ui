@@ -1,0 +1,537 @@
+/* style.css */
+
+:root{
+  --topbar-height: 64px;
+
+  --bg1:#14162a;
+  --bg2:#2b2f5e;
+  --bg3:#f2c3d8;
+
+  --card-bg: rgba(255,255,255,0.92);
+  --text: #141024;
+  --muted: rgba(20,16,36,0.65);
+
+  --primary: #16c7d4;
+  --primary-dark:#12aab5;
+
+  --shadow: 0 18px 50px rgba(0,0,0,0.18);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* Topbar */
+.topbar{
+  height: var(--topbar-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0 16px;
+  background:#fff;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* Logo to 1.5x (so với 28px => 42px) */
+.brand__logo{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  object-fit:cover;
+  background:#eee;
+}
+
+.brand__name{
+  font-weight:800;
+  font-size:18px;
+}
+
+.topbar__right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* Pills */
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  font-weight:700;
+  user-select:none;
+}
+
+.pill__dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background: #23e07a;
+  box-shadow: 0 0 0 3px rgba(35,224,122,0.15);
+}
+
+.pill__text{ font-size:14px; }
+.pill__chev{ opacity:0.65; }
+
+.pill--soft{
+  background: rgba(22,199,212,0.12);
+  border: 1px solid rgba(22,199,212,0.25);
+}
+
+/* Buttons */
+.btn{
+  border:none;
+  cursor:pointer;
+  font-weight:800;
+  border-radius:999px;
+  padding:10px 14px;
+  transition:0.15s;
+}
+
+.btn--primary{
+  background: var(--primary);
+  color:#fff;
+  box-shadow: 0 10px 22px rgba(22,199,212,0.25);
+}
+
+.btn--primary:hover{ background: var(--primary-dark); }
+
+.btn--ghost{
+  background: rgba(0,0,0,0.06);
+  color: var(--text);
+}
+
+.btn--ghost:hover{ background: rgba(0,0,0,0.10); }
+
+.btn--full{
+  width:100%;
+  padding: 14px 16px;
+  font-size:16px;
+}
+
+.disabled{
+  opacity:0.55;
+  cursor:not-allowed;
+  box-shadow:none !important;
+}
+
+/* Page + background */
+.page{
+  position:relative;
+  min-height: calc(100vh - var(--topbar-height));
+}
+
+.bg{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.bg--gradient{
+  background: linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+}
+
+/* Ảnh nền swanx/bg.png: cover + position khác nhau desktop/mobile */
+.bg--art{
+  background-image: url("./assets/bg.png");
+  background-repeat:no-repeat;
+  background-size: cover;
+  background-position: center 50%;
+  opacity: 0.95;
+}
+
+/* Center card: canh giữa theo dọc + ngang */
+.center{
+  position:relative;
+  min-height: calc(100vh - var(--topbar-height));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px 16px;
+}
+
+.card{
+  width: min(560px, 100%);
+  background: var(--card-bg);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  padding: 14px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Card head */
+.cardhead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  padding: 6px 6px 2px;
+}
+
+.cardhead__title{
+  font-weight:900;
+  font-size:18px;
+  line-height:1.1;
+}
+
+.cardhead__sub{
+  font-size:12px;
+  color: var(--muted);
+  margin-top:4px;
+}
+
+/* Tabs */
+.tabs{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding: 10px;
+  margin-top: 10px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 18px;
+}
+
+.tab{
+  flex:1;
+  border:none;
+  cursor:pointer;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight:900;
+  background: transparent;
+}
+
+.tab--active{
+  background: rgba(108,115,255,0.25);
+}
+
+/* Panel */
+.panel{
+  margin-top: 14px;
+  background: rgba(255,255,255,0.70);
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.view{ display:none; }
+.view--active{ display:block; }
+
+.field{ margin-bottom: 14px; }
+.field__label{
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.field__labelRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom: 8px;
+}
+.hint{
+  font-size:12px;
+  color: var(--muted);
+  margin-top:6px;
+}
+
+.tokenbox{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.amountInput{
+  flex:1;
+  border:none;
+  outline:none;
+  background: transparent;
+  font-size:18px;
+  font-weight:800;
+  color: rgba(20,16,36,0.85);
+}
+
+.amountInput[readonly]{
+  color: rgba(20,16,36,0.55);
+}
+
+.tokenSelect{
+  border:none;
+  outline:none;
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-weight:800;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.switchRow{
+  display:flex;
+  justify-content:center;
+  margin: -2px 0 10px;
+}
+.switchBtn{
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: rgba(255,255,255,0.70);
+  cursor:pointer;
+  font-size:16px;
+  font-weight:900;
+}
+.switchBtn:hover{ background: rgba(255,255,255,0.90); }
+
+.infoRow{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  color: rgba(20,16,36,0.75);
+  margin: 8px 2px 0;
+}
+
+.footerBox{
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+.footerBox__row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom: 12px;
+}
+.linklike{
+  font-size:12px;
+  font-weight:800;
+  color: rgba(20,16,36,0.75);
+  text-decoration: underline;
+}
+
+.status{
+  font-size:11px;
+  min-height: 16px;
+  margin-top: 8px;
+  color: rgba(20,16,36,0.75);
+  word-break: break-all;
+}
+
+.sectionTitle{
+  font-size:13px;
+  font-weight:900;
+  margin: 4px 2px 10px;
+  color: rgba(20,16,36,0.85);
+}
+
+.box{
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.boxRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  color: rgba(20,16,36,0.80);
+}
+
+.boxRow--gap{ gap:8px; }
+
+.miniInput{
+  flex:1;
+  border:none;
+  outline:none;
+  border-radius:999px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.06);
+  font-weight:800;
+}
+
+.tokenTag{
+  display:inline-flex;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius:999px;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.06);
+  font-weight:900;
+}
+
+.note{
+  margin-top: 10px;
+  font-size:11px;
+  color: rgba(20,16,36,0.65);
+}
+
+/* Mobile: đẩy background trọng tâm lên + card lệch lên chút */
+@media (max-width: 600px){
+  .bg--art{
+    background-position: center 42%;
+  }
+  .center{
+    align-items:flex-start;
+    padding-top: 14px;
+    padding-bottom: 22px;
+  }
+  .card{
+    width: min(560px, 100%);
+  }
+}
+
+/* ===== Slippage dropdown ===== */
+.slipWrap{ position:relative; display:inline-block; }
+.slipBtn{ cursor:pointer; }
+
+.slipMenu{
+  position:absolute;
+  right:0;
+  top: calc(100% + 8px);
+  min-width: 180px;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+  padding: 8px;
+  z-index: 50;
+  display:none;
+}
+
+.slipWrap.is-open .slipMenu{ display:block; }
+
+.slipItem{
+  width:100%;
+  text-align:left;
+  padding: 10px 10px;
+  border:none;
+  background: transparent;
+  border-radius: 12px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:13px;
+}
+.slipItem:hover{ background: rgba(0,0,0,0.06); }
+
+.slipDivider{
+  height:1px;
+  background: rgba(0,0,0,0.08);
+  margin: 6px 2px;
+}
+
+.slipCustom{
+  display:none;
+  gap:8px;
+  align-items:center;
+  margin-top:8px;
+}
+.slipCustom.is-show{ display:flex; }
+
+.slipInput{
+  flex:1;
+  border:1px solid rgba(0,0,0,0.12);
+  border-radius: 999px;
+  padding: 8px 10px;
+  outline:none;
+  font-size: 13px;
+  background: #fff;
+}
+
+.slipApply{
+  border:none;
+  border-radius: 999px;
+  padding: 8px 10px;
+  cursor:pointer;
+  font-weight:700;
+  font-size: 13px;
+  background: rgba(83,52,255,0.12);
+}
+
+.slipHint{
+  margin-top:8px;
+  font-size:11px;
+  opacity:0.7;
+}
+
+/* Dark mode (nếu bạn có class body.dark / .dark) - optional */
+.dark .slipMenu{
+  background: rgba(20,18,34,0.96);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.dark .slipItem:hover{ background: rgba(255,255,255,0.08); }
+.dark .slipInput{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+/* ===== Small button (Faucet) ===== */
+.btn--sm {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 999px;
+}
+
+/* Box row align left-right */
+.boxRow--between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Token label trong faucet */
+.tokenTag {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: #f1f3f6;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* ===== Faucet: làm nút Claim nhỏ lại ===== */
+.btn--sm{
+  padding: 8px 14px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  font-size: 13px !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+}
+
+/* Nếu .btn--primary đang ép full width hoặc height lớn */
+#view-faucet .btn{
+  width: auto !important;
+}
+
+/* Căn hàng HOUSE/BICY đẹp hơn: tag trái, nút phải */
+.boxRow--between{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#view-faucet .btn--full{ width:auto !important; }

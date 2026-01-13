@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ArcSwap</title>
+
+  <link rel="stylesheet" href="./style.css" />
+
+  <!-- ethers.js v6 -->
+  <script src="https://unpkg.com/ethers@6.7.0/dist/ethers.umd.min.js"></script>
+
+  <!-- Config must load BEFORE script.js -->
+  <script src="./config.js"></script>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar" id="topbar">
+      <div class="topbar__left">
+        <div class="brand" id="brand">
+          <img id="brandLogo" class="brand__logo" src="./assets/logo.png" alt="ArcSwap Logo">
+          <span id="brandName" class="brand__name">ArcSwap</span>
+        </div>
+      </div>
+
+      <div class="topbar__right">
+        <div id="networkPill" class="pill">
+          <span id="networkDot" class="pill__dot"></span>
+          <span id="networkName" class="pill__text">Arc</span>
+          <span class="pill__chev">▾</span>
+        </div>
+
+        <button id="btnConnectTop" class="btn btn--primary" type="button">Connect Wallet</button>
+      </div>
+    </header>
+
+    <!-- BACKGROUND -->
+    <main class="page" id="page">
+      <div class="bg bg--gradient"></div>
+      <div class="bg bg--art" id="bgArt"></div>
+
+      <!-- CENTER -->
+      <section class="center" id="center">
+        <div class="card" id="card">
+
+          <!-- CARD HEAD -->
+          <div class="cardhead">
+            <div class="cardhead__left">
+              <div class="cardhead__title" id="cardTitle">ArcSwap</div>
+              <div class="cardhead__sub" id="walletStatus">Not connected</div>
+              <div class="cardhead__sub" id="walletBalances">USDC: 0 · EURC: 0 · HOUSE: 0 · BICY: 0</div>
+            </div>
+            <div class="cardhead__right">
+              <button id="btnDisconnect" class="btn btn--ghost" type="button" title="Disconnect (UI only)">Reset</button>
+            </div>
+          </div>
+
+          <!-- TABS -->
+          <nav class="tabs" id="tabs" role="tablist" aria-label="ArcSwap Tabs">
+            <button class="tab tab--active" id="tabSwap" data-tab="swap" type="button">Swap</button>
+            <button class="tab" id="tabLiquidity" data-tab="liquidity" type="button">Liquidity</button>
+            <button class="tab" id="tabFaucet" data-tab="faucet" type="button">Faucet</button>
+          </nav>
+
+          <!-- PANELS -->
+          <div class="panel" id="panel">
+
+            <!-- SWAP VIEW -->
+            <section class="view view--active" id="view-swap">
+              <div class="field">
+                <div class="field__labelRow">
+                  <span class="field__label">From</span>
+                  <!-- JS will update text: ⇅ HOUSE → EURC, etc -->
+                  <button id="toggleDirBtn" class="pill pill--soft" type="button">⇅ USDC → EURC</button>
+                </div>
+
+                <div class="tokenbox">
+                  <input id="amountIn" class="amountInput" placeholder="0.0" inputmode="decimal" />
+
+                  <!-- tokenFrom: 4 tokens -->
+                  <select id="tokenFrom" class="tokenSelect">
+                    <option value="USDC">USDC</option>
+                    <option value="EURC">EURC</option>
+                    <option value="HOUSE">HOUSE</option>
+                    <option value="BICY">BICY</option>
+                  </select>
+                </div>
+                <div class="hint" id="fromBalance">Balance: 0</div>
+              </div>
+
+              <div class="switchRow">
+                <button id="btnSwitch" class="switchBtn" type="button" title="Switch">⇅</button>
+              </div>
+
+              <div class="field">
+                <div class="field__label">To (estimated)</div>
+                <div class="tokenbox">
+                  <input id="amountOut" class="amountInput" placeholder="0.0" readonly />
+
+                  <!-- tokenTo: 4 tokens (UNLOCK) -->
+                  <select id="tokenTo" class="tokenSelect">
+                    <option value="EURC">EURC</option>
+                    <option value="USDC">USDC</option>
+                    <option value="HOUSE">HOUSE</option>
+                    <option value="BICY">BICY</option>
+                  </select>
+                </div>
+                <div class="hint" id="toBalance">Balance: 0</div>
+              </div>
+
+              <div class="infoRow">
+                <span id="rateInfo">1 EURC ≈ ? USDC</span>
+                <span id="reserveInfo">Pool: ?</span>
+              </div>
+
+              <!-- FOOTER BOX (Slippage + Swap button + status) -->
+              <div class="footerBox">
+
+                <div class="footerBox__row">
+                  <span class="linklike">Slippage Tolerance</span>
+
+                  <div class="slipWrap" id="slippageWrap">
+                    <!-- Pill button -->
+                    <button
+                      class="pill pill--soft slipBtn"
+                      id="slippageBtn"
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <span id="slippageValue">Auto: 0.50%</span>
+                      <span class="pill__chev" style="margin-left:6px;">▾</span>
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div class="slipMenu" id="slippageMenu" role="menu" aria-label="Slippage menu">
+                      <button class="slipItem" type="button" data-slip-mode="auto">Auto</button>
+                      <button class="slipItem" type="button" data-slip-mode="preset" data-slip="0.1">0.1%</button>
+                      <button class="slipItem" type="button" data-slip-mode="preset" data-slip="0.5">0.5%</button>
+                      <button class="slipItem" type="button" data-slip-mode="preset" data-slip="1">1%</button>
+
+                      <div class="slipDivider"></div>
+
+                      <button class="slipItem" id="slipCustomOpen" type="button">Custom…</button>
+
+                      <div class="slipCustom" id="slipCustomBox">
+                        <input id="slipCustomInput" class="slipInput" placeholder="e.g. 0.25" inputmode="decimal" />
+                        <button id="slipCustomApply" class="slipApply" type="button">Apply</button>
+                      </div>
+
+                      <div class="slipHint" id="slipHint">Tip: Custom from 0.01% to 50%</div>
+                    </div>
+                  </div>
+                </div>
+
+                <button id="swapBtn" class="btn btn--primary btn--full disabled" type="button">Connect wallet</button>
+                <div id="txStatus" class="status"></div>
+
+              </div>
+            </section>
+
+            <!-- LIQUIDITY VIEW -->
+            <section class="view" id="view-liquidity">
+              <div class="sectionTitle">Liquidity · USDC / EURC</div>
+
+              <div class="box">
+                <div class="boxRow">
+                  <span>Your LP Shares:</span>
+                  <span id="lpInfo">0 / total 0</span>
+                </div>
+
+                <div class="boxRow boxRow--gap" style="margin-top:10px;">
+                  <input id="addUsdcInput" class="miniInput" placeholder="USDC amount" inputmode="decimal" />
+                  <input id="addEurcInput" class="miniInput" placeholder="EURC amount" inputmode="decimal" />
+                  <button id="addLpBtn" class="btn btn--primary" type="button">Add LP</button>
+                </div>
+
+                <div class="boxRow boxRow--gap">
+                  <input id="removeShareInput" class="miniInput" placeholder="Shares to remove" inputmode="decimal" />
+                  <button id="removeLpBtn" class="btn btn--ghost" type="button">Remove LP</button>
+                </div>
+
+                <div id="lpStatus" class="status" style="margin-top:8px;"></div>
+              </div>
+
+              <div class="note">
+                * Arc gas = USDC, hệ thống sẽ nhắc bạn giữ lại một ít USDC làm gas.
+              </div>
+            </section>
+
+            <!-- FAUCET VIEW -->
+            <section class="view" id="view-faucet">
+              <div class="sectionTitle">Faucet · HOUSE / BICY</div>
+
+              <div class="box">
+                <div class="boxRow">
+                  <span>Claim test tokens (cooldown per address)</span>
+                </div>
+
+                <!-- HOUSE -->
+                <div class="boxRow boxRow--between" style="margin-top:12px;">
+                  <span class="tokenTag">HOUSE</span>
+                  <button id="claimHouseBtn" class="btn btn--primary btn--sm" type="button">Claim HOUSE</button>
+                </div>
+
+                <!-- BICY -->
+                <div class="boxRow boxRow--between">
+                  <span class="tokenTag">BICY</span>
+                  <button id="claimBicyBtn" class="btn btn--primary btn--sm" type="button">Claim BICY</button>
+                </div>
+
+                <div id="faucetStatus" class="status" style="margin-top:8px;"></div>
+              </div>
+            </section>
+
+          </div><!-- /panel -->
+        </div><!-- /card -->
+      </section><!-- /center -->
+    </main><!-- /page -->
+  </div><!-- /app -->
+
+  <script src="./script.js"></script>
+</body>
+</html>
