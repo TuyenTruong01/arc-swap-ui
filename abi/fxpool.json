@@ -1,0 +1,9 @@
+[
+  "function fxRate() view returns (uint256)",
+  "function addLiquidity(uint256 usdcAmount, uint256 eurcAmount) external",
+  "function removeLiquidity(uint256 shareAmount) external",
+  "function totalShares() view returns (uint256)",
+  "function shares(address) view returns (uint256)",
+  "function swapUsdcForEurc(uint256 usdcIn) external",
+  "function swapEurcForUsdc(uint256 eurcIn) external"
+]

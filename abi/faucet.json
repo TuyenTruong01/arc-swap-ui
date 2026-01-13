@@ -1,0 +1,4 @@
+[
+  "function claimHouse() external",
+  "function claimBicy() external"
+]
